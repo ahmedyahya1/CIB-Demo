@@ -1,0 +1,12 @@
+---
+applications:
+- instances: 1
+  timeout: 180
+  name: mobtest
+  buildpack: sdk-for-nodejs
+  command: npm start
+  memory: 128MB
+  domain: mybluemix.net
+  host: mobtest
+  services:
+    - guestbook-db-67208

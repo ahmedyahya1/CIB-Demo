@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>CIB</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+   <link href="css/one-page-wonder.min.css" rel="stylesheet">
+</head>
+<body onload="data_load();">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-inverse">
+    <div class="container">
+      <a class="navbar-brand" href="#"></a>
+      <img src="./img/login-copy-logo-tt.svg" class="navbar-brand"/>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="admin.html">Dashboard</a>
+          </li>
+         <!--  <li class="nav-item">
+            <a class="nav-link" href="index.html">Log Out</a>
+        </li> -->
+        </ul> 
+      </div>
+    </div>
+  </nav>
+
+<div class="container-fluid">
+  <br>
+  <h2 align="center" style="font-family: Montserrat;font-size: 18px;line-height: 17px; color:#3E3E3E">Consumption Dashboard</h2>
+  <!-- <p>Resize the browser window to see the effect.</p>
+  <p>The columns will automatically stack on top of each other when the screen is less than 576px wide.</p> -->
+  <br>
+  <div class="container">
+  <div class="row">
+    <p class="col" id="nameMessage" style="font-family: Montserrat;font-size: 18px;line-height: 17px; color:#3E3E3E;"> Welcome,</p>
+    </div>
+  </div>
+    <div class="container">
+  <div class="row">
+   <div class="col" id="numberMessage" style="font-family: Montserrat;font-size: 18px;line-height: 17px; color:#3E3E3E;"> 
+   </div>
+    </div>
+    <br>
+  </div>
+      <div class="container">
+  <div class="row">
+   <a class="btn btn-danger btn-sm" href="index.html" role="button">Logout</a>   
+   </div>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-sm" style="font-family: Montserrat;font-size: 18px;line-height: 17px; color:#3E3E3E;">SMS</div>
+    <div class="col-sm" style="font-family: Montserrat;font-size: 18px;line-height: 17px; color:#3E3E3E;">Internet</div>
+    <div class="col-sm" style="font-family: Montserrat;font-size: 18px;line-height: 17px; color:#3E3E3E;">Calls</div>
+     <div class="col-sm" style="font-family: Montserrat;font-size: 18px;line-height: 17px; color:#3E3E3E;">Roaming</div>
+  </div>
+</div>
+<br>
+  <div class="row">
+    <meter class= "col-sm group" id="smsMeter" min="0" low="50" optimum="250" high="350" max="500" value="10"></meter>
+   <meter class= "col-sm group1" id="internetMeter" min="0" low="1000" optimum="7500" high="10000" max="15000" value="10000"></meter>
+    <meter class= "col-sm groupcopy" id="minutesMeter" min="0" low="100" optimum="2000" high="3000" max="4000" value="10000"></meter>
+    <!-- Default switch -->
+    <div class="col-sm custom-control custom-switch">
+      <input type="checkbox" class="custom-control-input" id="slider1">
+      <label class="custom-control-label" for="slider1"></label>
+    </div>
+  </div>
+  <br>
+     <div class="row">
+      
+       <p class="col-sm" id="smsMessage"> </p>
+       <p class="col-sm" id="internetMessage"></p>
+      <p class="col-sm" id="minutesMessage"></p>
+      <p class="col-sm"></p>
+
+    </div>
+  
+  <footer class="fixed-bottom py-2 bg-black">
+    <div class="footer-copyright text-center py-3">
+      <p class="m-0 text-center text-white small">Copyright &copy; IBM MEA Client Centers</p>
+    </div>
+    <!-- /.container -->
+  </footer>
+
+<script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+<!-- Scripts -->
+<script>
+    function data_load(){
+        var vars = {};
+        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+            vars[key] = value;
+                });
+                var str = 'https://api.eu-gb.apiconnect.appdomain.cloud/nardinebebawiibmcom-dev/sb/api/login?mobile=';
+                var value = str.concat(vars.a);
+                var name;
+                var value1;
+                $.getJSON(value, function(data) {
+                    name = `${data.Login}`;
+                    var str1 = 'https://api.eu-gb.apiconnect.appdomain.cloud/nardinebebawiibmcom-dev/sb/api/consumption?name=';
+                    value1 = str1.concat(name);
+                    $.getJSON(value1, function(data) {
+                        var sms = `${data.sms}`;
+                        var internet = `${data.internet}`;
+                        var minutes = `${data.minutes}`;
+                        var name = `${data.name}`;
+                        var mobile_number = `${data.mobile_number}`;
+                        var roaming = `${data.roaming}`;
+                        smsFunction(sms);
+                        internetFunction(internet);
+                        minutesFunction(minutes);
+                        nameFunction(name);
+                        numberFunction(mobile_number);
+                        roamingFunction(roaming);
+                    })
+                })
+            }
+        function roamingFunction(status){
+            if (status=="TRUE"){
+                triggerOnFunction();
+            }else{
+                triggerOffFunction();
+            }
+        }
+        function triggerOffFunction(){
+          document.getElementById('slider1').checked = false;
+        }
+        function triggerOnFunction(){
+          document.getElementById('slider1').checked = true;
+        }
+        function smsFunction(sms) {
+         document.getElementById("smsMeter").value = sms;
+       var x = document.getElementById("smsMeter").value;
+       document.getElementById("smsMessage").innerHTML = x+"/500";
+       }
+       function internetFunction(internet) {
+         document.getElementById("internetMeter").value = internet;
+       var x = document.getElementById("internetMeter").value;
+       document.getElementById("internetMessage").innerHTML = x+"/15000MB";
+       }
+        function minutesFunction(min) {
+         document.getElementById("minutesMeter").value = min;
+       var x = document.getElementById("minutesMeter").value;
+       document.getElementById("minutesMessage").innerHTML = x+"/4000minutes";
+       }
+       function nameFunction(name) {
+       document.getElementById("nameMessage").value = name;
+         var x = document.getElementById("nameMessage").value;
+         document.getElementById("nameMessage").innerHTML = "Welcome "+x;
+       }
+       function numberFunction(number) {
+       document.getElementById("numberMessage").value = number;
+         var x = document.getElementById("numberMessage").value;
+         document.getElementById("numberMessage").innerHTML = x;
+       }
+        document.addEventListener('DOMContentLoaded', function () {
+            var checkbox = document.querySelector('input[type="checkbox"]');
+            checkbox.addEventListener('change', function () {
+            var vars = {};
+            var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+                vars[key] = value;
+            });
+            var str = 'https://api.eu-gb.apiconnect.appdomain.cloud/nardinebebawiibmcom-dev/sb/api/login?mobile=';
+            var value = str.concat(vars.a);
+            var name;
+            var value1;
+            $.getJSON(value, function(data) {
+                name = `${data.Login}`;
+                var str1 = 'https://api.eu-gb.apiconnect.appdomain.cloud/nardinebebawiibmcom-dev/sb/api/consumption?name=';
+                value1 = str1.concat(name);
+                $.getJSON(value1, function(data) {
+                    var roaming = `${data.Roaming}`;
+                })
+            })
+            if (checkbox.checked) {
+                var vars = {};
+                var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+                    vars[key] = value;
+                });
+                var str = 'https://api.eu-gb.apiconnect.appdomain.cloud/nardinebebawiibmcom-dev/sb/api/login?mobile=';
+                var value = str.concat(vars.a);
+                var name;
+                var value1;
+                $.getJSON(value, function(data) {
+                    name = `${data.Login}`;
+                    var str1 = 'https://api.eu-gb.apiconnect.appdomain.cloud/nardinebebawiibmcom-dev/sb/api/roamingstatus?name=';
+                    value1 = str1.concat(name);
+                    $.getJSON(value1, function(data) {
+                        var roaming = `${data.Roaming}`;
+                    })
+                })
+            }
+            else{
+                var vars = {};
+                var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+                    vars[key] = value;
+                });
+                var str = 'https://api.eu-gb.apiconnect.appdomain.cloud/nardinebebawiibmcom-dev/sb/api/login?mobile=';
+                var value = str.concat(vars.a);
+                var name;
+                var value1;
+                $.getJSON(value, function(data) {
+                    name = `${data.Login}`;
+                    var str1 = 'https://api.eu-gb.apiconnect.appdomain.cloud/nardinebebawiibmcom-dev/sb/api/roamingstatus?name=';
+                    value1 = str1.concat(name);
+                    $.getJSON(value1, function(data) {
+                        var roaming = `${data.Roaming}`;
+                    })
+                })
+            }
+        });
+        });
+</script>
+<!-- End of Scripts -->
+</html>

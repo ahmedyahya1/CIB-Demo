@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>CIB Dashboard</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+   <link href="css/one-page-wonder.min.css" rel="stylesheet">
+   <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+</head>
+<body onload="data_load1();" style="background: #F1F3F6;">
+
+  <nav class="navbar navbar-expand-lg navbar-light navbar-inverse"style="background: #00336D;">
+    <div class="container-fluid">
+      <img src="./img/logoWhite.png" class="navbar-brand" />
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive" data-toggle="collapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html" style="color:white;">LOGOUT</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <br>
+    <div class="container">
+  <br>
+  <p align="center" style="font-family: Montserrat; font-size: 130%; line-height:100%; color: #3E3E3E;"> Account Dashboard</p>
+  <br>
+</div>
+<div class="container text-center">
+  <div class="row">
+    <div class="col-lg-2 col-sm-10 col-10">
+      <span id="nameMessage" style="font-family: Montserrat;font-size: 100%;line-height: 100%; color:#3E3E3E;"> Welcome</span>
+      <span id="numberMessage" style="font-family: Montserrat;font-size: 100%;line-height: 100%; color:#3E3E3E;"></span>
+      <a class="btn" href="/Statement.pdf" style="color: #FF7B00;" download>
+        <em>Download Statement</em>
+      </a>
+    </div>
+    <br>
+    <div class="col-lg-2 col-sm-10 col-10 hamada">
+      <span style="font-family: Montserrat;font-size: 100%;line-height: 100%; color:#3E3E3E;"> Balance </span>
+      <br>
+      <p id="debitMeter"></p>
+      <br>
+       <span id="debitMessage" style="font-family: Montserrat;font-size: 100%;line-height: 100%;"> </span>
+    </div>
+      <div class="col-lg-2 col-sm-6 col-6"style=" padding-bottom: 20px">
+      <span style="font-family: Montserrat;font-size: 100%;line-height: 100%; color:#3E3E3E;"> Credit Balance </span>
+      <br>
+      <p id="creditMeter"></p>
+      <br>
+       <span id="creditMessage" style="font-family: Montserrat;font-size: 100%;line-height: 100%;"> </span>
+    </div>
+      <div class="col-lg-2 col-sm-6 col-6"style="padding-bottom: 20px">
+      <span style="font-family: Montserrat;font-size: 100%;line-height: 100%; color:#3E3E3E;">Account Summary </span>
+      <br>
+      <p id="accountMeter"></p>
+      <br>
+       <span id="accountMessage" style="font-family: Montserrat;font-size: 100%;line-height: 100%;"> </span>
+    </div>
+    <div class="col-lg-4 col-sm-5 col-3 hamada2"style="padding-left:30px; padding-bottom: 90px">
+      <span style="font-family: Montserrat;font-size: 100%;line-height: 90%; color:#3E3E3E;">Transfer to Account</span>
+      <div class="input-group" style="padding-top: 30px">
+        <input type="name" class="form-control" id="Account" placeholder="Account no." style=" border-radius: 25px; padding-left: 5px;  text-align: center;">
+            <input type="number" class="form-control" id="Amount" placeholder="Amount" style=" border-radius: 25px; text-align: center;">
+            <input type="image" src="./img/transfer.png" width="40" hight="40" style=" padding-left: 5px;" onclick= "transferMoneyFunction();">
+        </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center">
+      <a href="https://www.cibeg.com/"><img class="image" src="img/ads.png" style="margin-top: -50px;"></a>
+    </div>
+
+    <footer class="fixed-bottom py-2 bg-black" >
+    <div class="footer-copyright text-center py-3">
+      <p class="m-0 text-center text-white small">Copyright &copy; IBM MEA Client Centers</p>
+    </div>
+    <!-- /.container -->
+  </footer>
+
+<script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+<!-- Scripts -->
+<script>
+
+function data_load1(){
+        var vars = {};
+        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+            vars[key] = value;
+                });
+        var xhr = new XMLHttpRequest();
+        var url="https://apic-gw-gateway-cp4i.apps.cp4i.local/egyptorg/sandbox/bank/balance?username=";
+        xhr.open('GET', url.concat(vars.a), true);
+        // alert(url.concat(name));
+        xhr.setRequestHeader('x-ibm-client-id','cebf0eeadde32d9a54fc4674ca95d675');
+        xhr.setRequestHeader('x-ibm-client-secret','8d5c8b9ce2c0054c7e2dccc66bf38b0e');
+        xhr.send();
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              var data = JSON.parse(this.responseText);
+                        var debit = `${data.debit_balance}`;
+                        var credit = `${data.credit_balance}`;
+                        var accountsum = `${data.account_summary}`;
+                        var name = `${data.name}`;
+                        var account_number = `${data.account_number}`;
+                        var max= `${data.maxium_credit}`;
+                        debitFunction(debit);
+                        creditFunction(credit,max);
+                        accountFunction(accountsum);
+                        nameFunction(name);
+                        numberFunction(account_number);
+                    }
+            }
+          }
+        function transferMoneyFunction(){
+          var accountorg = document.getElementById("Account").value;
+          var amountorg = document.getElementById("Amount").value;
+          var vars = {};
+          var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+            vars[key] = value;
+          });
+          var xhr = new XMLHttpRequest();
+          var url="https://apic-gw-gateway-cp4i.apps.cp4i.local/egyptorg/sandbox/bank/transfer?username=";
+          var username = url.concat(vars.a);
+          var accNumber = username.concat("&accountNumber="+accountorg);
+          var amount = accNumber.concat("&amount="+amountorg);
+          xhr.open('GET', amount, true);
+          alert("Transfer completed successfully");
+          xhr.setRequestHeader('x-ibm-client-id','cebf0eeadde32d9a54fc4674ca95d675');
+          xhr.setRequestHeader('x-ibm-client-secret','8d5c8b9ce2c0054c7e2dccc66bf38b0e');
+          xhr.send();
+          // var str = 'https://api.eu-gb.apiconnect.appdomain.cloud/nardinebebawiibmcom-dev/sb/api/transfer?username=&accountNumber=&amount=';
+           xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              var data = JSON.parse(this.responseText);
+                      var Transfer = `${data.Transfer}`;
+                      data_load1();
+            }}
+          // $.getJSON(str, function(data) {
+          //   var Transfer = `${data.Transfer}`;
+          //   alert (Transfer);
+          // })
+        }
+        function debitFunction(debit) {
+         document.getElementById("debitMeter").value = debit;
+       var x = document.getElementById("debitMeter").value;
+       document.getElementById("debitMessage").innerHTML = x + " EGP";
+       }
+       function creditFunction(credit,max) {
+         document.getElementById("creditMeter").value = credit;
+       var x = document.getElementById("creditMeter").value;
+       document.getElementById("creditMessage").innerHTML = x+ " / " +max+" EGP";
+       }
+        function accountFunction(accountsum) {
+         document.getElementById("accountMeter").value = accountsum;
+       var x = document.getElementById("accountMeter").value;
+       document.getElementById("accountMessage").innerHTML = x + " EGP";
+       }
+       function nameFunction(name) {
+       document.getElementById("nameMessage").value = name;
+         var x = document.getElementById("nameMessage").value;
+         document.getElementById("nameMessage").innerHTML = "Welcome "+x+", <br>";
+       }
+       function numberFunction(account_number) {
+       document.getElementById("numberMessage").value = account_number;
+         var x = document.getElementById("numberMessage").value;
+         document.getElementById("numberMessage").innerHTML = x+"<br>";
+       }
+
+</script>
+<!-- End of Scripts -->
+</html>
